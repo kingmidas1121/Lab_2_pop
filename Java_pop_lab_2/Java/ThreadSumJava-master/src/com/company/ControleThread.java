@@ -4,12 +4,19 @@ import java.util.Random;
 
 public class ControleThread {
 
-  private int stopThreadsCount = 0;
-  private final int threadsCount = 8;
-  private final int maxArraySize = 10000;
+  private int stopThreadsCount;
+  private  int threadsCount;
+  private  int maxArraySize;
+  private int minIndex;
+  private int minElement;
 
-  private int minIndex = 0;
-  private int minElement = 0;
+  public ControleThread(int stopThreadsCount, int threadsCount, int maxArraySize, int minIndex, int minElement) {
+    this.stopThreadsCount = stopThreadsCount;
+    this.threadsCount = threadsCount;
+    this.maxArraySize = maxArraySize;
+    this.minIndex = minIndex;
+    this.minElement = minElement;
+  }
 
   public void EntryPoint(){
     System.out.println("Threads count: " + threadsCount);
@@ -38,7 +45,7 @@ public class ControleThread {
       this.minElement = minElement;
     }
     stopThreadsCount++;
-    if (threadsCount > stopThreadsCount) {
+    if (threadsCount == stopThreadsCount) {
       notify();
     }
   }
