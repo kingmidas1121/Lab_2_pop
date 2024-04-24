@@ -5,6 +5,7 @@ procedure Main is
    dim : constant Integer := 100000;
    thread_num : constant Integer := 5;
    minIndex : Integer;
+   minValue : Integer;
    arr : array(1..dim) of Integer;
 
    function generate_random_number ( from: in Integer; to: in Integer) return Integer is
@@ -38,7 +39,7 @@ procedure Main is
 
    protected ThreadManager is
       procedure ChangeMin(MinIndex : in Integer; MinValue : in Integer; ThreadIndex : in Integer);
-      entry GetMinIndex(MinIndex : out Integer);
+      entry GetMinIndex(MinIndex : out Integer; MinValue : out Integer);
    private
       min_Index : Integer := 1;
       min_Value : Integer := arr(1);
@@ -56,9 +57,10 @@ procedure Main is
          count_of_threads := count_of_threads + 1;
       end ChangeMin;
 
-      entry GetMinIndex(MinIndex : out Integer) when count_of_threads = thread_num is
+      entry GetMinIndex(MinIndex : out Integer; MinValue : out Integer) when count_of_threads = thread_num is
       begin
          MinIndex := min_Index;
+         MinValue := min_Value;
       end GetMinIndex;
    end ThreadManager;
 
@@ -94,8 +96,8 @@ begin
       threads(i).Init(i);
    end loop;
    Put_Line("Threads count: " & thread_num'img);
-   ThreadManager.GetMinIndex(minIndex);
+   ThreadManager.GetMinIndex(minIndex, minValue);
    Put_Line("");
-   Put_Line("Minimal value: " & arr(minIndex)'img);
+   Put_Line("Minimal value: " & minValue'img);
    Put_Line("Index of minimal value: " & minIndex'img);
    end Main;
